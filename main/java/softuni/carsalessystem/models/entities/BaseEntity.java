@@ -40,4 +40,9 @@ public class BaseEntity {
     public void setModified(Instant modified) {
         this.modified = modified;
     }
+
+    @PrePersist
+    public void beforeCreate() {
+        this.created = Instant.now();
+    }
 }
