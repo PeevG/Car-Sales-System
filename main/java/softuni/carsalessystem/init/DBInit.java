@@ -1,29 +1,53 @@
 package softuni.carsalessystem.init;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import softuni.carsalessystem.models.entities.UserEntity;
 import softuni.carsalessystem.repositories.BrandRepository;
 import softuni.carsalessystem.enums.CategoryEnum;
 import softuni.carsalessystem.models.entities.BrandEntity;
 import softuni.carsalessystem.models.entities.ModelEntity;
+import softuni.carsalessystem.repositories.UserRepository;
 
 import java.util.List;
 
 @Component
 public class DBInit implements CommandLineRunner {
 
+    private final PasswordEncoder passwordEncoder;
     private final BrandRepository brandRepository;
+    private final UserRepository userRepository;
 
-    public DBInit(BrandRepository brandRepository) {
+    public DBInit(PasswordEncoder passwordEncoder, BrandRepository brandRepository, UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.brandRepository = brandRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        seedDB();
+        seedBrandsAndModels();
+        seedUsers();
+
     }
 
-    private void seedDB() {
+    private void seedUsers() {
+        if(userRepository.count() > 0) {
+            return;
+        }
+        UserEntity user = new UserEntity();
+        user.setUsername("Admin");
+        user.setPassword(passwordEncoder.encode("test"));
+        user.setActive(true);
+        user.setFirstName("Martin");
+        user.setLastName("Ivanov");
+
+
+        userRepository.save(user);
+    }
+
+    private void seedBrandsAndModels() {
         if (brandRepository.count() > 0) {
             return;
         }

@@ -3,10 +3,8 @@ package softuni.carsalessystem.models.entities;
 import softuni.carsalessystem.models.entities.BaseEntity;
 import softuni.carsalessystem.models.entities.UserRoleEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -18,7 +16,6 @@ public class UserEntity extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-
     @Column(nullable = false, name = "first_name")
     private String firstName;
 
@@ -28,10 +25,10 @@ public class UserEntity extends BaseEntity {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @ManyToOne
-    private UserRoleEntity role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<UserRoleEntity> role;
 
-    @Column(nullable = false, name = "image_url")
+    @Column(name = "image_url")
     private String imageUrl;
 
     public UserEntity() {
@@ -77,13 +74,6 @@ public class UserEntity extends BaseEntity {
         isActive = active;
     }
 
-    public UserRoleEntity getRole() {
-        return role;
-    }
-
-    public void setRole(UserRoleEntity role) {
-        this.role = role;
-    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -91,5 +81,13 @@ public class UserEntity extends BaseEntity {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public List<UserRoleEntity> getRole() {
+        return role;
+    }
+
+    public void setRole(List<UserRoleEntity> role) {
+        this.role = role;
     }
 }

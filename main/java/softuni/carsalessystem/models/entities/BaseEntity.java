@@ -45,4 +45,9 @@ public class BaseEntity {
     public void beforeCreate() {
         this.created = Instant.now();
     }
+
+    @PostPersist
+    public void onUpdate() {
+        this.modified = Instant.now();
+    }
 }
