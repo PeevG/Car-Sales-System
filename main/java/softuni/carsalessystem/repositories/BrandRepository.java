@@ -6,4 +6,5 @@ import softuni.carsalessystem.models.entities.BrandEntity;
 
 @Repository
 public interface BrandRepository extends JpaRepository<BrandEntity, Long> {
+    BrandEntity findBrandEntityByName(String name);
 }

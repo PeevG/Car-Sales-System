@@ -1,8 +1,5 @@
 package softuni.carsalessystem.models.entities;
 
-import softuni.carsalessystem.models.entities.BaseEntity;
-import softuni.carsalessystem.models.entities.UserRoleEntity;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -26,7 +23,7 @@ public class UserEntity extends BaseEntity {
     private boolean isActive;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<UserRoleEntity> role;
+    private List<UserRoleEntity> roles;
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -83,11 +80,11 @@ public class UserEntity extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
-    public List<UserRoleEntity> getRole() {
-        return role;
+    public List<UserRoleEntity> getRoles() {
+        return roles;
     }
 
-    public void setRole(List<UserRoleEntity> role) {
-        this.role = role;
+    public void setRoles(List<UserRoleEntity> role) {
+        this.roles = role;
     }
 }
