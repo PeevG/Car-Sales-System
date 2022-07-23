@@ -36,14 +36,21 @@ public class DBInit implements CommandLineRunner {
         if(userRepository.count() > 0) {
             return;
         }
+        UserEntity admin = new UserEntity();
+        admin.setUsername("Admin");
+        admin.setPassword(passwordEncoder.encode("test"));
+        admin.setFirstName("Georgi");
+        admin.setLastName("Petrov");
+        admin.setActive(true);
+
         UserEntity user = new UserEntity();
-        user.setUsername("Admin");
-        user.setPassword(passwordEncoder.encode("test"));
+        user.setUsername("Martin");
+        user.setPassword(passwordEncoder.encode("Martinov"));
         user.setActive(true);
         user.setFirstName("Martin");
         user.setLastName("Ivanov");
 
-
+        userRepository.save(admin);
         userRepository.save(user);
     }
 

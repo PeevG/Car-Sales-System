@@ -1,15 +1,16 @@
 package softuni.carsalessystem.web;
 
-import org.apache.juli.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import softuni.carsalessystem.models.dto.UserLoginDTO;
+import org.springframework.web.bind.annotation.RequestMapping;
+import softuni.carsalessystem.models.bindings.UserLoginBindingModel;
 import softuni.carsalessystem.services.UserService;
 
 @Controller
+@RequestMapping("/users")
 public class UserLoginController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(UserLoginController.class);
@@ -19,22 +20,26 @@ public class UserLoginController {
         this.userService = userService;
     }
 
-    @GetMapping("/users/login")
+    @GetMapping("/login")
     public String login() {
         return "auth-login";
     }
 
-    @PostMapping("/users/login")
-    public String login(UserLoginDTO userLoginDTO) {
+    @PostMapping("/login")
+    public String login(UserLoginBindingModel userLoginBindingModel) {
 
+        UserLoginBindingModel dto = new UserLoginBindingModel();
+        dto.setUsername(userLoginBindingModel.getUsername());
+        dto.setPassword(userLoginBindingModel.getPassword());
 
-        UserLoginDTO dto = new UserLoginDTO();
-        dto.setUsername(userLoginDTO.getUsername());
-        dto.setPassword(userLoginDTO.getPassword());
         boolean isLogged = userService.login(dto);
 
-        LOGGER.info("User tried to login. User with name {} tried to login. Success = {}", userLoginDTO.getPassword()
+        LOGGER.info("User tried to login. User with name {} tried to login. Success = {}", userLoginBindingModel.getPassword()
                 ,isLogged);
+
+        if(isLogged) {
+            return "redirect:/";
+        }
 
         return "redirect:/users/login";
     }

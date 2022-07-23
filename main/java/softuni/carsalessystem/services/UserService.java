@@ -1,7 +1,9 @@
 package softuni.carsalessystem.services;
 
-import softuni.carsalessystem.models.dto.UserLoginDTO;
+import softuni.carsalessystem.models.bindings.UserLoginBindingModel;
 
 public interface UserService {
-    boolean login(UserLoginDTO userLoginDTO);
+    boolean login(UserLoginBindingModel userLoginBindingModel);
+
+    void logout();
 }

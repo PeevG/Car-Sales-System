@@ -1,10 +1,10 @@
-package softuni.carsalessystem.models.dto;
+package softuni.carsalessystem.models.bindings;
 
-public class UserLoginDTO {
+public class UserLoginBindingModel {
     String username;
     String password;
 
-    public UserLoginDTO() {
+    public UserLoginBindingModel() {
     }
 
     public String getUsername() {
