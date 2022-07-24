@@ -19,4 +19,5 @@ public class OffersController {
         model.addAttribute("offers", offerService.getAllOffers());
         return "offers";
     }
+
 }

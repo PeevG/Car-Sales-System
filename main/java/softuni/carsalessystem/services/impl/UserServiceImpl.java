@@ -6,6 +6,7 @@ import softuni.carsalessystem.enums.UserRoleEnum;
 import softuni.carsalessystem.models.bindings.UserLoginBindingModel;
 import softuni.carsalessystem.models.entities.UserEntity;
 import softuni.carsalessystem.models.entities.UserRoleEntity;
+import softuni.carsalessystem.models.service.UserRegisterServiceModel;
 import softuni.carsalessystem.repositories.UserRepository;
 import softuni.carsalessystem.repositories.UserRoleRepository;
 import softuni.carsalessystem.services.UserService;
@@ -44,10 +45,7 @@ public class UserServiceImpl implements UserService {
 
             if (success) {
                 UserEntity loggedInUser = userEntityOptional.get();
-                currentUser.setLoggedIn(true);
-                currentUser.setUsername(loggedInUser.getUsername());
-                currentUser.setFirstName(loggedInUser.getFirstName());
-                currentUser.setLastName(loggedInUser.getLastName());
+                login(loggedInUser);
 
                 loggedInUser.getRoles()
                         .forEach(r -> currentUser.addRole(r.getRole()));
@@ -102,6 +100,33 @@ public class UserServiceImpl implements UserService {
 
         userRoleRepository.save(userRole);
         userRoleRepository.save(adminRole);
+    }
+
+    @Override
+    public void registerAndLoginUser(UserRegisterServiceModel userRegisterServiceModel) {
+
+        UserRoleEntity userRole = userRoleRepository.findByRole(UserRoleEnum.USER);
+        userRole.setRole(UserRoleEnum.USER);
+
+
+        UserEntity newUser = new UserEntity();
+        newUser.setUsername(userRegisterServiceModel.getUsername());
+        newUser.setFirstName(userRegisterServiceModel.getFirstName());
+        newUser.setLastName(userRegisterServiceModel.getLastName());
+        newUser.setPassword(passwordEncoder.encode(userRegisterServiceModel.getPassword()));
+        newUser.setActive(true);
+        newUser.setRoles(List.of(userRole));
+
+        newUser = userRepository.save(newUser);
+
+        login(newUser);
+    }
+
+    private void login(UserEntity user) {
+        currentUser.setLoggedIn(true);
+        currentUser.setUsername(user.getUsername());
+        currentUser.setFirstName(user.getFirstName());
+        currentUser.setLastName(user.getLastName());
     }
 }
 
