@@ -108,7 +108,6 @@ public class UserServiceImpl implements UserService {
         UserRoleEntity userRole = userRoleRepository.findByRole(UserRoleEnum.USER);
         userRole.setRole(UserRoleEnum.USER);
 
-
         UserEntity newUser = new UserEntity();
         newUser.setUsername(userRegisterServiceModel.getUsername());
         newUser.setFirstName(userRegisterServiceModel.getFirstName());
@@ -120,6 +119,12 @@ public class UserServiceImpl implements UserService {
         newUser = userRepository.save(newUser);
 
         login(newUser);
+    }
+
+    @Override
+    public boolean isUserNameFree(String username) {
+        return userRepository.findByUsernameIgnoreCase(username)
+                .isEmpty();
     }
 
     private void login(UserEntity user) {

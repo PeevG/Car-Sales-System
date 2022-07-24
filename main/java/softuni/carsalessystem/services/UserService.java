@@ -10,4 +10,6 @@ public interface UserService {
     void seedUserRoles();
 
     void registerAndLoginUser(UserRegisterServiceModel userRegisterServiceModel);
+
+    boolean isUserNameFree(String username);
 }

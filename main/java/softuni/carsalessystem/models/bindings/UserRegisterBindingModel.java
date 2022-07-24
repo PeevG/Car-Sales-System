@@ -1,15 +1,23 @@
 package softuni.carsalessystem.models.bindings;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class UserRegisterBindingModel {
+
+
     private String firstName;
+
     private String lastName;
+
     private String username;
     private String password;
     private String confirmPassword;
 
     public UserRegisterBindingModel() {
     }
-
+    @Size(min = 4 ,max = 20)
+    @NotNull
     public String getFirstName() {
         return firstName;
     }
@@ -17,7 +25,7 @@ public class UserRegisterBindingModel {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
+    @Size(min = 4 ,max = 20)
     public String getLastName() {
         return lastName;
     }
