@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 
 public class OfferSummaryView {
 
+    private Long id;
     private String description;
     private EngineEnum engine;
     private String imageUrl;
@@ -81,5 +82,13 @@ public class OfferSummaryView {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

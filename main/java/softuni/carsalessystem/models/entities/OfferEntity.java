@@ -105,4 +105,12 @@ public class OfferEntity extends BaseEntity {
     public void setModel(ModelEntity model) {
         this.model = model;
     }
+
+    public UserEntity getSeller() {
+        return seller;
+    }
+
+    public void setSeller(UserEntity seller) {
+        this.seller = seller;
+    }
 }

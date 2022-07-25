@@ -23,6 +23,9 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public void seedModels() {
+        if(modelRepository.count() > 0) {
+            return;
+        }
         ModelEntity w209 = new ModelEntity()
                 .setName("CLK")
                 .setCategory(CategoryEnum.CAR)
