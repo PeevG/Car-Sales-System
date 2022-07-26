@@ -78,6 +78,11 @@ public class OfferServiceImpl implements OfferService {
                 .orElse(null);
     }
 
+    @Override
+    public void delete(Long id) {
+        this.offerRepository.deleteById(id);
+    }
+
     private OfferDetailsView mapDetailsView(OfferEntity offerEntity) {
         OfferDetailsView odv = this.modelMapper.map(offerEntity, OfferDetailsView.class);
         odv.setBrand(offerEntity.getModel().getBrand().getName());
