@@ -1,45 +1,22 @@
-package softuni.carsalessystem.models.view;
+package softuni.carsalessystem.models.bindings;
 
 import softuni.carsalessystem.enums.EngineEnum;
 import softuni.carsalessystem.enums.TransmissionEnum;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
-public class OfferDetailsView {
+public class OfferUpdateBindingModel {
 
     private Long id;
     private String description;
+    private EngineEnum engine;
+    private String imageUrl;
     private Integer mileage;
     private int price;
-    private EngineEnum engine;
     private TransmissionEnum transmission;
-    private Instant created;
-    private Instant modified;
     private Integer year;
-    private String model;
-    private String brand;
-    private String imageUrl;
-    private String firstName;
-    private String lastName;
 
-    public OfferDetailsView() {
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public OfferUpdateBindingModel() {
     }
 
     public Long getId() {
@@ -48,6 +25,14 @@ public class OfferDetailsView {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public String getDescription() {
@@ -66,13 +51,6 @@ public class OfferDetailsView {
         this.mileage = mileage;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
 
     public EngineEnum getEngine() {
         return engine;
@@ -90,44 +68,12 @@ public class OfferDetailsView {
         this.transmission = transmission;
     }
 
-    public Instant getCreated() {
-        return created;
-    }
-
-    public void setCreated(Instant created) {
-        this.created = created;
-    }
-
-    public Instant getModified() {
-        return modified;
-    }
-
-    public void setModified(Instant modified) {
-        this.modified = modified;
-    }
-
     public Integer getYear() {
         return year;
     }
 
     public void setYear(Integer year) {
         this.year = year;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
     }
 
     public String getImageUrl() {

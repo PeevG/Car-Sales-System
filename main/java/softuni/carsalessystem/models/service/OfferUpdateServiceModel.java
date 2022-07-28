@@ -1,4 +1,4 @@
-package softuni.carsalessystem.models.view;
+package softuni.carsalessystem.models.service;
 
 import softuni.carsalessystem.enums.EngineEnum;
 import softuni.carsalessystem.enums.TransmissionEnum;
@@ -6,12 +6,11 @@ import softuni.carsalessystem.enums.TransmissionEnum;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-public class OfferDetailsView {
-
+public class OfferUpdateServiceModel {
     private Long id;
     private String description;
     private Integer mileage;
-    private int price;
+    private BigDecimal price;
     private EngineEnum engine;
     private TransmissionEnum transmission;
     private Instant created;
@@ -23,23 +22,7 @@ public class OfferDetailsView {
     private String firstName;
     private String lastName;
 
-    public OfferDetailsView() {
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public OfferUpdateServiceModel() {
     }
 
     public Long getId() {
@@ -66,11 +49,11 @@ public class OfferDetailsView {
         this.mileage = mileage;
     }
 
-    public int getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -136,5 +119,21 @@ public class OfferDetailsView {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

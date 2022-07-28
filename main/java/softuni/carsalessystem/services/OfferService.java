@@ -1,6 +1,7 @@
 package softuni.carsalessystem.services;
 
 import softuni.carsalessystem.models.entities.OfferEntity;
+import softuni.carsalessystem.models.service.OfferUpdateServiceModel;
 import softuni.carsalessystem.models.view.OfferDetailsView;
 import softuni.carsalessystem.models.view.OfferSummaryView;
 
@@ -16,4 +17,6 @@ public interface OfferService {
     OfferDetailsView findById(Long id);
 
     void delete(Long id);
+
+    void updateOffer(OfferUpdateServiceModel offerModel);
 }

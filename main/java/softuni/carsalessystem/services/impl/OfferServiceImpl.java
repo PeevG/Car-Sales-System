@@ -5,12 +5,14 @@ import org.springframework.stereotype.Service;
 import softuni.carsalessystem.enums.EngineEnum;
 import softuni.carsalessystem.enums.TransmissionEnum;
 import softuni.carsalessystem.models.entities.OfferEntity;
+import softuni.carsalessystem.models.service.OfferUpdateServiceModel;
 import softuni.carsalessystem.models.view.OfferDetailsView;
 import softuni.carsalessystem.models.view.OfferSummaryView;
 import softuni.carsalessystem.repositories.ModelRepository;
 import softuni.carsalessystem.repositories.OfferRepository;
 import softuni.carsalessystem.repositories.UserRepository;
 import softuni.carsalessystem.services.OfferService;
+import softuni.carsalessystem.web.exception.ObjectNotFoundException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -36,6 +38,8 @@ public class OfferServiceImpl implements OfferService {
         if(offerRepository.count() > 0) {
             return;
         }
+
+
         OfferEntity ofer1 = new OfferEntity();
         ofer1.setModel(modelRepository.findByName("CLK").orElse(null));
         ofer1.setEngine(EngineEnum.DIESEL);
@@ -81,6 +85,17 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public void delete(Long id) {
         this.offerRepository.deleteById(id);
+    }
+
+
+    @Override
+    public void updateOffer(OfferUpdateServiceModel offerModel) {
+       OfferEntity offerEntity = offerRepository.findById(offerModel.getId())
+                .orElseThrow(() -> new ObjectNotFoundException("Offer with id " + offerModel.getId() + " not found!"));
+
+       offerEntity.setPrice(offerModel.getPrice());
+
+       offerRepository.save(offerEntity);
     }
 
     private OfferDetailsView mapDetailsView(OfferEntity offerEntity) {
