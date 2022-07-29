@@ -23,10 +23,21 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public void seedModels() {
-        if(modelRepository.count() > 0) {
+        if (modelRepository.count() > 0) {
             return;
         }
+        BrandEntity mercedes = this.brandRepository.findBrandEntityByName("Mercedes");
+        BrandEntity bmw = this.brandRepository.findBrandEntityByName("BMW");
+
+        ModelEntity m5 = new ModelEntity()
+                .setBrand(bmw)
+                .setName("5 seria")
+                .setCategory(CategoryEnum.CAR)
+                .setImageUrl("https://pokupka-globalen.today/pics_MP-Style-Carbon-Fiber-Car-Tail-Wing-For-BMW-M5-F90-1/imgs_80117.jpeg")
+                .setStartYear(1972);
+
         ModelEntity w209 = new ModelEntity()
+                .setBrand(mercedes)
                 .setName("CLK")
                 .setCategory(CategoryEnum.CAR)
                 .setImageUrl("https://i.pinimg.com/originals/31/b1/ae/31b1ae3e22489473a65f1209b26d1932.png")
@@ -34,17 +45,12 @@ public class ModelServiceImpl implements ModelService {
                 .setEndYear(2010);
 
         ModelEntity w223 = new ModelEntity();
+        w223.setBrand(mercedes);
         w223.setName("S class");
         w223.setCategory(CategoryEnum.CAR);
         w223.setImageUrl("https://dizzyriders.bg/uploads/thumbs/gallery/2020-09/ed9c441c51b86eea406ec26faea6468d-620x427.jpg");
         w223.setStartYear(2021);
 
-        BrandEntity mercedes = this.brandRepository.findBrandEntityByName("Mercedes");
-
-        mercedes.setModels(List.of(w209, w223));
-        w209.setBrand(mercedes);
-        w223.setBrand(mercedes);
-        this.modelRepository.save(w209);
-        this.modelRepository.save(w223);
+        this.modelRepository.saveAll(List.of(w209, w223, m5));
     }
 }

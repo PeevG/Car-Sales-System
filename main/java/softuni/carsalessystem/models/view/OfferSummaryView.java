@@ -16,8 +16,18 @@ public class OfferSummaryView {
     private TransmissionEnum transmission;
     private Integer	year;
     private String model;
+    private String brand;
 
     public OfferSummaryView() {
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public OfferSummaryView setBrand(String brand) {
+        this.brand = brand;
+        return this;
     }
 
     public String getDescription() {

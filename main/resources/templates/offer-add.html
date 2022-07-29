@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -13,71 +14,31 @@
 
 <body>
 
-<div>
-     <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
-        <a class="navbar-brand" href="/"><img alt="car picture" src="/img/car.png" class="logo"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto col-12 justify-content-between">
-                <li class="nav-item"
-                    >
-                    <a class="nav-link" href="/brands/all">All Brands</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/offers/add">Add Offer</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/offers/all">All Offers</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Admin
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/">Action</a>
-                        <a class="dropdown-item" href="/">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/">Something else here</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div class="form-inline my-2 my-lg-0 border px-3">
-                        <div class="logged-user"
-                             text="Welcome, Gosho"></div>
-                        <a class="nav-link" href="/users/logout">Logout</a>
-                    </div>
-                </li>
-                
-                    <li class="nav-item">
-                        <a class="nav-link" href="/users/register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/users/login">Login</a>
-                    </li>
-                
-            </ul>
-        </div>
-    </nav>
+<div th:replace="fragments/navbar :: navbar">
+    Navbar
 </div>
 
 
 <div class="container">
     <h2 class="text-center text-white">Upload Offer</h2>
-    <form method="POST" 
+    <form   th:action="@{/offers/add}"
+            th:method="post"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
         <div class="row">
 
             <div class="form-group col-md-6 mb-3">
                 <label class="text-center text-white font-weight-bold" for="model">Model</label>
-                <select id="model" class="form-control">
+                <select
+                        name="model"
+                        id="model"
+                        class="form-control">
                     <option value="">- Select a model -</option>
                     <optgroup label="Brand name">
-                        <option>Model</option>
+                        <option
+                                th:each="modelName : ${models}"
+                                th:value="${modelName}"
+                                th:text="${modelName}"
+                        >Model</option>
                     </optgroup>
                 </select>
                 <p class="errors alert alert-danger">
@@ -96,21 +57,38 @@
         <div class="row">
             <div class="form-group col-md-6 mb-3">
                 <label class="text-center text-white font-weight-bold" for="engine">Engine</label>
-                <select id="engine" class="form-control">
+                <select
+                        name="engine"
+                        id="engine"
+                        class="form-control">
                     <option value="">- Select engine type -</option>
-                    <option>
+                    <option
+                            th:each="anEngine : ${engines}"
+                            th:value="${anEngine}"
+                            th:text="${anEngine}"
+                            th:selected="${anEngine}== *{engine}"
+                    >
                         Engine type
                     </option>
                 </select>
-                <p class="errors alert alert-danger">
+                <p class=" errors alert alert-danger">
                     Engine type is required.
                 </p>
             </div>
             <div class="form-group col-md-6 mb-3">
                 <label class="text-center text-white font-weight-bold" for="transmission">Transmission</label>
-                <select id="transmission" class="form-control">
+                <select
+
+                        id="transmission"
+
+                        class="form-control">
                     <option value="">- Select transmission type -</option>
-                    <option> Transmission type
+                    <option
+                            th:each="anTransmission : ${transmissions}"
+                            th:value="${anTransmission}"
+                            th:text="${anTransmission}"
+                            th:selected="${anTransmission}== *{transmission}"
+                    > Transmission type
                     </option>
                 </select>
                 <p class="errors alert alert-danger">

@@ -1,12 +1,11 @@
 package softuni.carsalessystem.services;
 
-import softuni.carsalessystem.models.entities.OfferEntity;
+import softuni.carsalessystem.models.service.OfferAddServiceModel;
 import softuni.carsalessystem.models.service.OfferUpdateServiceModel;
 import softuni.carsalessystem.models.view.OfferDetailsView;
 import softuni.carsalessystem.models.view.OfferSummaryView;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface OfferService {
 
@@ -19,4 +18,8 @@ public interface OfferService {
     void delete(Long id);
 
     void updateOffer(OfferUpdateServiceModel offerModel);
+
+    void addOffer(OfferAddServiceModel offerAddServiceModel);
+
+    List<String> getAllModelsNames();
 }

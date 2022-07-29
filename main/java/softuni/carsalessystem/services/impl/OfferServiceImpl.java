@@ -4,7 +4,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import softuni.carsalessystem.enums.EngineEnum;
 import softuni.carsalessystem.enums.TransmissionEnum;
+import softuni.carsalessystem.models.entities.ModelEntity;
 import softuni.carsalessystem.models.entities.OfferEntity;
+import softuni.carsalessystem.models.service.OfferAddServiceModel;
 import softuni.carsalessystem.models.service.OfferUpdateServiceModel;
 import softuni.carsalessystem.models.view.OfferDetailsView;
 import softuni.carsalessystem.models.view.OfferSummaryView;
@@ -15,6 +17,7 @@ import softuni.carsalessystem.services.OfferService;
 import softuni.carsalessystem.web.exception.ObjectNotFoundException;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,43 +38,53 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public void seedOffers() {
-        if(offerRepository.count() > 0) {
+        if (offerRepository.count() > 0) {
             return;
         }
 
+        OfferEntity offer1 = new OfferEntity();
+        offer1.setModel(modelRepository.findByName("CLK").orElse(null));
+        offer1.setEngine(EngineEnum.DIESEL);
+        offer1.setTransmission(TransmissionEnum.AUTOMATIC);
+        offer1.setMileage(215000);
+        offer1.setPrice(BigDecimal.valueOf(11200));
+        offer1.setYear(2004);
+        offer1.setDescription("Always serviced on time and in good condition.");
+        offer1.setSeller(userRepository.findByUsername("Martin").orElse(null));
+        offer1.setImageUrl("https://cloud.leparking.fr/2021/08/04/01/27/mercedes-clk-mercedes-benz-w209-clk-320-grau_8227762968.jpg");
 
-        OfferEntity ofer1 = new OfferEntity();
-        ofer1.setModel(modelRepository.findByName("CLK").orElse(null));
-        ofer1.setEngine(EngineEnum.DIESEL);
-        ofer1.setTransmission(TransmissionEnum.AUTOMATIC);
-        ofer1.setMileage(215000);
-        ofer1.setPrice(BigDecimal.valueOf(11200));
-        ofer1.setYear(2004);
-        ofer1.setDescription("Always serviced on time and in good condition.");
-        ofer1.setSeller(userRepository.findByUsername("Martin").orElse(null));
-        ofer1.setImageUrl("https://cloud.leparking.fr/2021/08/04/01/27/mercedes-clk-mercedes-benz-w209-clk-320-grau_8227762968.jpg");
+        OfferEntity offer2 = new OfferEntity();
+        offer2.setModel(modelRepository.findByName("S class").orElse(null));
+        offer2.setEngine(EngineEnum.GASOLINE);
+        offer2.setTransmission(TransmissionEnum.AUTOMATIC);
+        offer2.setMileage(125000);
+        offer2.setPrice(BigDecimal.valueOf(30200));
+        offer2.setYear(2012);
+        offer2.setDescription("Always serviced on time and in good condition.");
+        offer2.setSeller(userRepository.findByUsername("Admin").orElse(null));
+        offer2.setImageUrl("https://s1.cdn.autoevolution.com/images/gallery/MERCEDES-BENZ-S-Klasse--W221--4131_31.jpg");
 
-        OfferEntity ofer2 = new OfferEntity();
-        ofer2.setModel(modelRepository.findByName("S class").orElse(null));
-        ofer2.setEngine(EngineEnum.GASOLINE);
-        ofer2.setTransmission(TransmissionEnum.AUTOMATIC);
-        ofer2.setMileage(125000);
-        ofer2.setPrice(BigDecimal.valueOf(30200));
-        ofer2.setYear(2012);
-        ofer2.setDescription("Always serviced on time and in good condition.");
-        ofer2.setSeller(userRepository.findByUsername("Admin").orElse(null));
-        ofer2.setImageUrl("https://s1.cdn.autoevolution.com/images/gallery/MERCEDES-BENZ-S-Klasse--W221--4131_31.jpg");
+        OfferEntity offer3 = new OfferEntity()
+                .setModel(modelRepository.findByName("5 seria").orElse(null))
+                .setEngine(EngineEnum.GASOLINE)
+                .setTransmission(TransmissionEnum.AUTOMATIC)
+                .setMileage(50000)
+                .setPrice(BigDecimal.valueOf(120000))
+                .setYear(2019)
+                .setDescription("The car is under warranty until 2024.")
+                .setSeller(userRepository.findByUsername("Admin").orElse(null))
+                .setImageUrl("https://pokupka-globalen.today/pics_MP-Style-Carbon-Fiber-Car-Tail-Wing-For-BMW-M5-F90-1/imgs_80117.jpeg");
 
-        offerRepository.saveAll(List.of(ofer1, ofer2));
+        offerRepository.saveAll(List.of(offer1, offer2, offer3));
     }
 
     @Override
     public List<OfferSummaryView> getAllOffers() {
-       return this.offerRepository
-               .findAll()
-               .stream()
-               .map(this::mapSummaryView)
-               .collect(Collectors.toList());
+        return this.offerRepository
+                .findAll()
+                .stream()
+                .map(this::mapSummaryView)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -88,15 +101,47 @@ public class OfferServiceImpl implements OfferService {
     }
 
 
+
     @Override
     public void updateOffer(OfferUpdateServiceModel offerModel) {
-       OfferEntity offerEntity = offerRepository.findById(offerModel.getId())
+        OfferEntity offerEntity = offerRepository.findById(offerModel.getId())
                 .orElseThrow(() -> new ObjectNotFoundException("Offer with id " + offerModel.getId() + " not found!"));
 
-       offerEntity.setPrice(offerModel.getPrice());
+        offerEntity.setPrice(offerModel.getPrice())
+                .setDescription(offerModel.getDescription())
+                .setEngine(offerModel.getEngine())
+                .setImageUrl(offerModel.getImageUrl())
+                .setMileage(offerModel.getMileage())
+                .setTransmission(offerModel.getTransmission())
+                .setYear(offerModel.getYear())
+                .setModified(Instant.now());
 
-       offerRepository.save(offerEntity);
+        offerRepository.save(offerEntity);
     }
+
+    @Override
+    public void addOffer(OfferAddServiceModel offerAddServiceModel) {
+        OfferEntity offerEntity = modelMapper.map(offerAddServiceModel, OfferEntity.class)
+                .setEngine(offerAddServiceModel.getEngine())
+                .setModel(modelRepository.findById(offerAddServiceModel.getId()).orElse(null))
+                .setDescription(offerAddServiceModel.getDescription())
+                .setPrice(BigDecimal.valueOf(offerAddServiceModel.getPrice()))
+                .setTransmission(offerAddServiceModel.getTransmission())
+                .setYear(offerAddServiceModel.getYear())
+                .setMileage(offerAddServiceModel.getMileage())
+                .setImageUrl(offerAddServiceModel.getImageUrl());
+
+        this.offerRepository.save(offerEntity);
+    }
+
+    @Override
+    public List<String> getAllModelsNames() {
+        return modelRepository.findAll()
+                .stream()
+                .map(ModelEntity::getName)
+                .collect(Collectors.toList());
+    }
+
 
     private OfferDetailsView mapDetailsView(OfferEntity offerEntity) {
         OfferDetailsView odv = this.modelMapper.map(offerEntity, OfferDetailsView.class);
@@ -111,7 +156,9 @@ public class OfferServiceImpl implements OfferService {
 
         OfferSummaryView offerSummaryView = modelMapper.map(offerEntity, OfferSummaryView.class);
 
+        offerSummaryView.setYear(offerEntity.getYear());
         offerSummaryView.setModel(offerEntity.getModel().getName());
+        offerSummaryView.setBrand(offerEntity.getModel().getBrand().getName());
 
         return offerSummaryView;
     }

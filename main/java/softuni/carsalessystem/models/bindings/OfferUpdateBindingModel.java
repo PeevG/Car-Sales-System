@@ -3,6 +3,7 @@ package softuni.carsalessystem.models.bindings;
 import softuni.carsalessystem.enums.EngineEnum;
 import softuni.carsalessystem.enums.TransmissionEnum;
 
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 public class OfferUpdateBindingModel {
@@ -12,7 +13,7 @@ public class OfferUpdateBindingModel {
     private EngineEnum engine;
     private String imageUrl;
     private Integer mileage;
-    private int price;
+    private Integer price;
     private TransmissionEnum transmission;
     private Integer year;
 
@@ -27,14 +28,17 @@ public class OfferUpdateBindingModel {
         this.id = id;
     }
 
-    public int getPrice() {
+    @NotNull
+    @Min(100)
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
+    @NotBlank
     public String getDescription() {
         return description;
     }
@@ -43,6 +47,7 @@ public class OfferUpdateBindingModel {
         this.description = description;
     }
 
+    @PositiveOrZero
     public Integer getMileage() {
         return mileage;
     }
@@ -51,7 +56,7 @@ public class OfferUpdateBindingModel {
         this.mileage = mileage;
     }
 
-
+    @NotNull
     public EngineEnum getEngine() {
         return engine;
     }
@@ -68,6 +73,8 @@ public class OfferUpdateBindingModel {
         this.transmission = transmission;
     }
 
+    @NotNull
+    @Min(1900)
     public Integer getYear() {
         return year;
     }
@@ -76,6 +83,7 @@ public class OfferUpdateBindingModel {
         this.year = year;
     }
 
+    @NotBlank
     public String getImageUrl() {
         return imageUrl;
     }

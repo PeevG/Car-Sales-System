@@ -13,14 +13,11 @@ public class OfferUpdateServiceModel {
     private BigDecimal price;
     private EngineEnum engine;
     private TransmissionEnum transmission;
-    private Instant created;
-    private Instant modified;
+
     private Integer year;
-    private String model;
-    private String brand;
+
     private String imageUrl;
-    private String firstName;
-    private String lastName;
+
 
     public OfferUpdateServiceModel() {
     }
@@ -73,22 +70,6 @@ public class OfferUpdateServiceModel {
         this.transmission = transmission;
     }
 
-    public Instant getCreated() {
-        return created;
-    }
-
-    public void setCreated(Instant created) {
-        this.created = created;
-    }
-
-    public Instant getModified() {
-        return modified;
-    }
-
-    public void setModified(Instant modified) {
-        this.modified = modified;
-    }
-
     public Integer getYear() {
         return year;
     }
@@ -97,43 +78,11 @@ public class OfferUpdateServiceModel {
         this.year = year;
     }
 
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 }

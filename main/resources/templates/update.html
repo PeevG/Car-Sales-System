@@ -35,7 +35,6 @@
                         th:field="*{mileage}"
                         th:errorclass="is-invalid"
                         type="number"
-                        min="0" step="100"
                         class="form-control"
                         placeholder="Mileage in kilometers"/>
                 <p class="invalid-feedback errors alert alert-danger">
@@ -53,14 +52,18 @@
                         class="form-control"
                        placeholder="Suggested price"/>
                 <p class="invalid-feedback errors alert alert-danger">
-                    Suggested price is required.
+                    Suggested price is required and should be more than 100.
                 </p>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-md-6 mb-3">
                 <label class="text-center text-white font-weight-bold" for="engine">Engine</label>
-                <select id="engine" class="form-control">
+                <select
+                        th:name="engine"
+                        th:errorclass="is-invalid"
+                        id="engine"
+                        class="form-control">
                     <option value="">- Select engine type -</option>
                     <option
                             th:each="anEngine : ${engines}"
@@ -80,6 +83,7 @@
                 <select
                         id="transmission"
                         name="transmission"
+                        th:errorclass="is-invalid"
                         class="form-control">
                     <option value="">- Select transmission type -</option>
                     <option
@@ -119,7 +123,7 @@
                     type="textarea" class="form-control" rows="3"
                       placeholder="Description"></textarea>
             <p class="invalid-feedback errors alert alert-danger">
-                Description is required.
+                Description is required and cannot be empty.
             </p>
         </div>
         <div class="form-group">
