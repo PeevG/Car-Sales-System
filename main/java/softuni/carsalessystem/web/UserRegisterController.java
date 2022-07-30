@@ -45,17 +45,21 @@ public class UserRegisterController {
             redirectAttributes.addFlashAttribute("userModel", userModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userModel"
                     , bindingResult);
-
             return "redirect:/users/register";
         }
-
+        if(!userModel.getPassword().equals(userModel.getConfirmPassword())) {
+            redirectAttributes.addFlashAttribute("userModel", userModel);
+            //redirectAttributes.addFlashAttribute("passwordsCheck", !userModel.getPassword().equals(userModel.getConfirmPassword()));
+            return "redirect:/users/register";
+        }
         UserRegisterServiceModel serviceModel = modelMapper.map(userModel, UserRegisterServiceModel.class);
 
         if(!userService.isUserNameFree(serviceModel.getUsername())){
             redirectAttributes.addFlashAttribute("userModel", userModel);
             redirectAttributes.addFlashAttribute("userNameOccupied", true);
             return "redirect:/users/register";
-        } else {
+        }
+        else {
             userService.registerAndLoginUser(serviceModel);
         }
 

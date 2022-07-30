@@ -43,10 +43,12 @@
                 <label for="lastName" class="text-white font-weight-bold">Last Name</label>
                 <input
                         id="lastName"
-                        name="lastName"
-                        type="text" min="2" max="20" class="form-control"
-                       placeholder="First name"/>
-                <p class="errors alert alert-danger">
+                        th:field="*{lastName}"
+                        th:errorclass="is-invalid"
+                        type="text"
+                        class="form-control"
+                       placeholder="Last name"/>
+                <p class="invalid-feedback errors alert alert-danger">
                     Last name is required.
                 </p>
             </div>
@@ -54,11 +56,14 @@
         <div class="row">
             <div class="form-group col-md-6 mb-3">
                 <label for="username" class="text-white font-weight-bold">Username</label>
-                <input id="username"
-                       name="username"
-                       type="text" min="2" max="20" class="form-control"
-                       placeholder="First name"/>
-                <p class="errors alert alert-danger">
+                <input
+                        id="username"
+                        th:field="*{username}"
+                        th:errorclass="is-invalid"
+                        type="text"
+                        class="form-control"
+                       placeholder="Username"/>
+                <p class="invalid-feedback errors alert alert-danger">
                     Username is required.
                 </p>
             </div>
@@ -66,11 +71,26 @@
                 <label for="password" class="text-white font-weight-bold">Password</label>
                 <input
                         id="password"
-                        name="password"
-                        type="password" min="2" max="20" class="form-control"
+                        th:field="*{password}"
+                        th:errorclass="is-invalid"
+                        type="password"
+                        class="form-control"
                        placeholder="Password"/>
-                <p class="errors alert alert-danger">
-                    Password is required.
+                <p class="invalid-feedback errors alert alert-danger">
+                    Password is required and should be minimum 6 symbols.
+                </p>
+            </div>
+            <div class="form-group col-md-6 mb-3">
+                <label for="confirmPassword" class="text-white font-weight-bold">Confirm Password</label>
+                <input
+                        id="confirmPassword"
+                        th:field="*{confirmPassword}"
+                        th:errorclass="is-invalid"
+                        type="password"
+                        class="form-control"
+                        placeholder="Confirm Password"/>
+                <p class="invalid-feedback errors alert alert-danger">
+                    Password and Confirm password should match.
                 </p>
             </div>
         </div>
@@ -86,7 +106,7 @@
         <div class="row">
             <div class="col col-md-4">
                 <div class="button-holder d-flex">
-                    <input type="submit" class="btn btn-info btn-lg" value="Create account"/>
+                    <input type="submit" class="btn btn-info btn-lg" value="Register"/>
                 </div>
             </div>
         </div>
