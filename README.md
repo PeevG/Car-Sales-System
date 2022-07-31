@@ -1,4 +1,4 @@
-This is a project from course Spring Fundamentals by SoftUni.
+This is a project from course Spring Fundamentals at SoftUni.
 
 Car Sales System is a basic Spring app with a few properties.
 
