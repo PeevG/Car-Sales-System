@@ -13,6 +13,7 @@ import softuni.carsalessystem.models.bindings.OfferUpdateBindingModel;
 import softuni.carsalessystem.models.service.OfferAddServiceModel;
 import softuni.carsalessystem.models.service.OfferUpdateServiceModel;
 import softuni.carsalessystem.models.view.OfferDetailsView;
+import softuni.carsalessystem.services.BrandService;
 import softuni.carsalessystem.services.OfferService;
 
 import javax.validation.Valid;
@@ -22,11 +23,13 @@ public class OffersController {
 
     private final OfferService offerService;
     private final ModelMapper modelMapper;
+    private final BrandService brandService;
 
 
-    public OffersController(OfferService offerService, ModelMapper modelMapper) {
+    public OffersController(OfferService offerService, ModelMapper modelMapper, BrandService brandService) {
         this.offerService = offerService;
         this.modelMapper = modelMapper;
+        this.brandService = brandService;
     }
 
     @GetMapping("/offers/all")
@@ -91,15 +94,16 @@ public class OffersController {
     }
 
 
-
     @GetMapping("/offers/add")
     public String addOffer(Model model) {
 
-        //model.addAttribute("brands", this.offerService.getAllBrandsNames());
-        model.addAttribute("models", this.offerService.getAllModelsNames());
-        model.addAttribute("engines", EngineEnum.values());
-        model.addAttribute("transmissions", TransmissionEnum.values());
 
+        if (!model.containsAttribute("addOfferBindingModel")) {
+            model.addAttribute("brands", this.brandService.getAllBrands());
+            model.addAttribute("models", this.offerService.getAllModelsNames());
+            model.addAttribute("engines", EngineEnum.values());
+            model.addAttribute("transmissions", TransmissionEnum.values());
+        }
         return "offer-add";
     }
 
@@ -109,17 +113,12 @@ public class OffersController {
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
 
-
         if (bindingResult.hasErrors()) {
-
             redirectAttributes.addFlashAttribute("addOfferBindingModel", addOfferBindingModel);
-
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addOfferBindingModel", bindingResult);
-
             return "redirect:/offers/add";
         }
         OfferAddServiceModel serviceModel = modelMapper.map(addOfferBindingModel, OfferAddServiceModel.class);
-
 
         offerService.addOffer(serviceModel);
         return "redirect:/offers/all";

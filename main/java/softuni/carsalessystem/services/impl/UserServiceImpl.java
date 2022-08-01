@@ -10,54 +10,23 @@ import softuni.carsalessystem.models.service.UserRegisterServiceModel;
 import softuni.carsalessystem.repositories.UserRepository;
 import softuni.carsalessystem.repositories.UserRoleRepository;
 import softuni.carsalessystem.services.UserService;
-import softuni.carsalessystem.user.CurrentUser;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final CurrentUser currentUser;
+
     private final UserRoleRepository userRoleRepository;
 
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CurrentUser currentUser, UserRoleRepository userRoleRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.currentUser = currentUser;
         this.userRoleRepository = userRoleRepository;
-    }
-
-    @Override
-    public boolean login(UserLoginBindingModel userLoginBindingModel) {
-        Optional<UserEntity> userEntityOptional = userRepository.findByUsername(userLoginBindingModel.getUsername());
-
-        if (userEntityOptional.isEmpty()) {
-            logout();
-            return false;
-        } else {
-            boolean success = passwordEncoder
-                    .matches(userLoginBindingModel
-                            .getPassword(), userEntityOptional.get().getPassword());
-
-            if (success) {
-                UserEntity loggedInUser = userEntityOptional.get();
-                login(loggedInUser);
-
-                loggedInUser.getRoles()
-                        .forEach(r -> currentUser.addRole(r.getRole()));
-            }
-            return success;
-        }
-    }
-
-
-    @Override
-    public void logout() {
-        currentUser.cleanUserInfo();
     }
 
     @Override
@@ -117,8 +86,9 @@ public class UserServiceImpl implements UserService {
         newUser.setRoles(List.of(userRole));
 
         newUser = userRepository.save(newUser);
+        // Todo:register user
 
-        login(newUser);
+        // login(newUser);
     }
 
     @Override
@@ -127,11 +97,5 @@ public class UserServiceImpl implements UserService {
                 .isEmpty();
     }
 
-    private void login(UserEntity user) {
-        currentUser.setLoggedIn(true);
-        currentUser.setUsername(user.getUsername());
-        currentUser.setFirstName(user.getFirstName());
-        currentUser.setLastName(user.getLastName());
-    }
 }
 

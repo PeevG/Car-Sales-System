@@ -21,18 +21,12 @@
 
 <div class="container-fluid">
     <h5 class="text-center text-white mt-5">Welcome to MobiLeLeLe,
-        <span th:if="${@currentUser.isLoggedIn()}"
-              th:text="${@currentUser.username}">
-        </span>
-        <span th:unless="${@currentUser.isLoggedIn()}">
-                Anonymous
-        </span>
-        !
+        <!-- TODO: -->
     </h5>
 </div>
 
 <div>
-    <footer> </footer>
+    <footer></footer>
 </div>
 
 </body>
