@@ -27,7 +27,7 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
                   // With this line we allow access to all static resources
                   .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                   // With this line we allow access to home page, login page and registration page for everyone.
-                  .antMatchers("/", "/users/login", "/users/registration").permitAll()
+                  .antMatchers("/", "/users/login", "/users/register").permitAll()
                   // Forbid all other pages for unauthenticated users.
                   .antMatchers("/**").authenticated()
                   // Configure login with login HTML form with two fields(username, password for example).
@@ -46,15 +46,15 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
                   // The place where we should land in case that the login is NOT SUCCESSFUL.
                   .failureForwardUrl("/users/login-error")
                 .and()
-                .logout()
-                // This is the URL which spring will implement for me and will log the user out.
-                .logoutUrl("/logout")
-                // Where to go after logout.
-                .logoutSuccessUrl("/")
-                // Remove the session from server
-                .invalidateHttpSession(true)
-                // Delete the cookies that references to my session.
-                .deleteCookies("JSESSIONID");
+                  .logout()
+                  // This is the URL which spring will implement for me and will log the user out.
+                  .logoutUrl("/users/logout")
+                  // Where to go after logout.
+                  .logoutSuccessUrl("/")
+                  // Remove the session from server
+                  .invalidateHttpSession(true)
+                  // Delete the cookies that references to my session.
+                  .deleteCookies("JSESSIONID");
 
 
     }
