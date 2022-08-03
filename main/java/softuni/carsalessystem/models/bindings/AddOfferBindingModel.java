@@ -3,15 +3,12 @@ package softuni.carsalessystem.models.bindings;
 import softuni.carsalessystem.enums.EngineEnum;
 import softuni.carsalessystem.enums.TransmissionEnum;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
 
 public class AddOfferBindingModel {
 
     private Long id;
-    private String model;
+
     private Integer price;
     private EngineEnum engine;
     private TransmissionEnum transmission;
@@ -22,7 +19,7 @@ public class AddOfferBindingModel {
 
     public AddOfferBindingModel() {
     }
-
+    @NotNull
     public Long getId() {
         return id;
     }
@@ -32,17 +29,9 @@ public class AddOfferBindingModel {
         return this;
     }
 
-    @NotBlank
-    public String getModel() {
-        return model;
-    }
-
-    public AddOfferBindingModel setModel(String model) {
-        this.model = model;
-        return this;
-    }
 
     @Positive
+    @NotNull
     public Integer getPrice() {
         return price;
     }
@@ -73,6 +62,7 @@ public class AddOfferBindingModel {
     }
 
     @NotNull
+    @Min(value = 1900)
     public Integer getYear() {
         return year;
     }
@@ -102,7 +92,7 @@ public class AddOfferBindingModel {
         return this;
     }
 
-    @NotBlank
+    @NotNull
     public String getImageUrl() {
         return imageUrl;
     }

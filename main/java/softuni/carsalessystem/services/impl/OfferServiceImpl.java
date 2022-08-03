@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import softuni.carsalessystem.enums.EngineEnum;
 import softuni.carsalessystem.enums.TransmissionEnum;
+import softuni.carsalessystem.models.bindings.AddOfferBindingModel;
 import softuni.carsalessystem.models.entities.ModelEntity;
 import softuni.carsalessystem.models.entities.OfferEntity;
 import softuni.carsalessystem.models.service.OfferAddServiceModel;
@@ -17,6 +18,7 @@ import softuni.carsalessystem.services.OfferService;
 import softuni.carsalessystem.web.exception.ObjectNotFoundException;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -101,7 +103,6 @@ public class OfferServiceImpl implements OfferService {
     }
 
 
-
     @Override
     public void updateOffer(OfferUpdateServiceModel offerModel) {
         OfferEntity offerEntity = offerRepository.findById(offerModel.getId())
@@ -120,18 +121,25 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public void addOffer(OfferAddServiceModel offerAddServiceModel) {
-        OfferEntity offerEntity = modelMapper.map(offerAddServiceModel, OfferEntity.class)
-                .setEngine(offerAddServiceModel.getEngine())
-                .setModel(modelRepository.findById(offerAddServiceModel.getId()).orElse(null))
-                .setDescription(offerAddServiceModel.getDescription())
-                .setPrice(BigDecimal.valueOf(offerAddServiceModel.getPrice()))
-                .setTransmission(offerAddServiceModel.getTransmission())
-                .setYear(offerAddServiceModel.getYear())
-                .setMileage(offerAddServiceModel.getMileage())
-                .setImageUrl(offerAddServiceModel.getImageUrl());
+    public OfferAddServiceModel addOffer(AddOfferBindingModel addOfferBindingModel, Principal principal) {
 
-        this.offerRepository.save(offerEntity);
+        OfferAddServiceModel offerAddServiceModel = modelMapper.map(addOfferBindingModel, OfferAddServiceModel.class);
+        OfferEntity newOffer = modelMapper.map(offerAddServiceModel, OfferEntity.class);
+
+        newOffer
+                //.setEngine(addOfferBindingModel.getEngine())
+                .setSeller(userRepository.findByUsername(principal.getName()).orElseThrow())
+                .setModel(modelRepository.findById(addOfferBindingModel.getId()).orElse(null))
+               // .setDescription(addOfferBindingModel.getDescription())
+                .setPrice(BigDecimal.valueOf(addOfferBindingModel.getPrice()))
+                .setTransmission(addOfferBindingModel.getTransmission())
+                .setYear(addOfferBindingModel.getYear())
+                .setMileage(addOfferBindingModel.getMileage())
+                .setImageUrl(addOfferBindingModel.getImageUrl())
+                .setCreated(Instant.now());
+
+        OfferEntity savedOffer = this.offerRepository.save(newOffer);
+        return modelMapper.map(savedOffer, OfferAddServiceModel.class);
     }
 
     @Override

@@ -17,6 +17,7 @@ import softuni.carsalessystem.services.BrandService;
 import softuni.carsalessystem.services.OfferService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class OffersController {
@@ -99,8 +100,8 @@ public class OffersController {
 
 
         if (!model.containsAttribute("addOfferBindingModel")) {
+            model.addAttribute("addOfferBindingModel", new AddOfferBindingModel());
             model.addAttribute("brands", this.brandService.getAllBrands());
-            model.addAttribute("models", this.offerService.getAllModelsNames());
             model.addAttribute("engines", EngineEnum.values());
             model.addAttribute("transmissions", TransmissionEnum.values());
         }
@@ -108,19 +109,25 @@ public class OffersController {
     }
 
     @PostMapping("/offers/add")
-    public String addOffer(
-            @Valid AddOfferBindingModel addOfferBindingModel,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes) {
+    public String addOffer(@Valid AddOfferBindingModel addOfferBindingModel,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes,
+                           Principal principal) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addOfferBindingModel", addOfferBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addOfferBindingModel", bindingResult);
+            redirectAttributes.addFlashAttribute("brands", this.brandService.getAllBrands());
+            redirectAttributes.addFlashAttribute("engines", EngineEnum.values());
+            redirectAttributes.addFlashAttribute("transmissions", TransmissionEnum.values());
+            redirectAttributes.addFlashAttribute("price", addOfferBindingModel.getPrice());
+            redirectAttributes.addFlashAttribute("mileage", addOfferBindingModel.getMileage());
+            redirectAttributes.addFlashAttribute("imageUrl", addOfferBindingModel.getImageUrl());
             return "redirect:/offers/add";
         }
-        OfferAddServiceModel serviceModel = modelMapper.map(addOfferBindingModel, OfferAddServiceModel.class);
 
-        offerService.addOffer(serviceModel);
-        return "redirect:/offers/all";
+        OfferAddServiceModel serviceModel = offerService.addOffer(addOfferBindingModel, principal);
+
+        return "redirect:/offers/" + serviceModel.getId() + "/details";
     }
 }

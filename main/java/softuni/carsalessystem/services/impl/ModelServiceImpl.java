@@ -31,7 +31,7 @@ public class ModelServiceImpl implements ModelService {
 
         ModelEntity m5 = new ModelEntity()
                 .setBrand(bmw)
-                .setName("5 seria")
+                .setName("550")
                 .setCategory(CategoryEnum.CAR)
                 .setImageUrl("https://pokupka-globalen.today/pics_MP-Style-Carbon-Fiber-Car-Tail-Wing-For-BMW-M5-F90-1/imgs_80117.jpeg")
                 .setStartYear(1972);
