@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import softuni.carsalessystem.enums.UserRoleEnum;
+import softuni.carsalessystem.models.entities.UserRoleEntity;
 
 @Configuration
 public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
@@ -28,6 +30,8 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
                   .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                   // With this line we allow access to home page, login page and registration page for everyone.
                   .antMatchers("/", "/users/login", "/users/register").permitAll()
+                  // We permit the page role only for admin users
+                  .antMatchers("/statistics").hasRole(UserRoleEnum.ADMIN.name())
                   // Forbid all other pages for unauthenticated users.
                   .antMatchers("/**").authenticated()
                   // Configure login with login HTML form with two fields(username, password for example).
