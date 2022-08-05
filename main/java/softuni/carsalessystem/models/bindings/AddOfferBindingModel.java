@@ -72,6 +72,7 @@ public class AddOfferBindingModel {
         return this;
     }
 
+    @NotNull
     @PositiveOrZero
     public Integer getMileage() {
         return mileage;

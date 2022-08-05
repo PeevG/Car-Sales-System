@@ -4,9 +4,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import softuni.carsalessystem.enums.EngineEnum;
 import softuni.carsalessystem.enums.TransmissionEnum;
+import softuni.carsalessystem.enums.UserRoleEnum;
 import softuni.carsalessystem.models.bindings.AddOfferBindingModel;
 import softuni.carsalessystem.models.entities.ModelEntity;
 import softuni.carsalessystem.models.entities.OfferEntity;
+import softuni.carsalessystem.models.entities.UserEntity;
+import softuni.carsalessystem.models.entities.UserRoleEntity;
 import softuni.carsalessystem.models.service.OfferAddServiceModel;
 import softuni.carsalessystem.models.service.OfferUpdateServiceModel;
 import softuni.carsalessystem.models.view.OfferDetailsView;
@@ -21,6 +24,7 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -136,6 +140,27 @@ public class OfferServiceImpl implements OfferService {
         this.offerRepository.deleteById(id);
     }
 
+    @Override
+    public boolean isOwner(String username, Long id) {
+        Optional<OfferEntity> offerOpt = offerRepository.findById(id);
+        Optional<UserEntity> caller = userRepository.findByUsername(username);
+
+        if (offerOpt.isEmpty() || caller.isEmpty()) {
+            return false;
+        } else {
+            OfferEntity offerEntity = offerOpt.get();
+
+            return isAdmin(caller.get()) ||
+                    offerEntity.getSeller().getUsername().equalsIgnoreCase(username);
+        }
+    }
+
+    private boolean isAdmin(UserEntity user) {
+        return user.getRoles()
+                .stream()
+                .map(UserRoleEntity::getRole)
+                .anyMatch(r -> r == UserRoleEnum.ADMIN);
+    }
 
     @Override
     public void updateOffer(OfferUpdateServiceModel offerModel) {
@@ -164,7 +189,7 @@ public class OfferServiceImpl implements OfferService {
                 //.setEngine(addOfferBindingModel.getEngine())
                 .setSeller(userRepository.findByUsername(principal.getName()).orElseThrow())
                 .setModel(modelRepository.findById(addOfferBindingModel.getId()).orElse(null))
-               // .setDescription(addOfferBindingModel.getDescription())
+                // .setDescription(addOfferBindingModel.getDescription())
                 .setPrice(BigDecimal.valueOf(addOfferBindingModel.getPrice()))
                 .setTransmission(addOfferBindingModel.getTransmission())
                 .setYear(addOfferBindingModel.getYear())

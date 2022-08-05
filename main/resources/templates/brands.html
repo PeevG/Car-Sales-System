@@ -21,27 +21,28 @@
 <div class="container">
     <h2 class="text-center text-white m-3">All Brands</h2>
     <div class='row mb-4 d-flex justify-content-around'>
-        <div  class="brand-section col-md-5 mr-auto d-flex flex-column">
+        <div th:each="b : ${brands}" th:object="${b}"
+             class="brand-section col-md-5 mr-auto d-flex flex-column">
             <h2>Car brand:
-                <span >Brand name</span>
+                <span th:text="*{name}">Brand name</span>
             </h2>
-            <div>Models:
+            <div >Models:
                 <table>
                     <tr>
-                        <th>No</th>
+
                         <th>Name</th>
                         <th>Category</th>
                         <th>Start Year</th>
                         <th>End Year</th>
                         <th>Picture</th>
                     </tr>
-                    <tr>
-                        <th>No</th>
-                        <th >Model Name</th>
-                        <th >Model Category</th>
-                        <th >Model Start Year</th>
-                        <th >Model End Year</th>
-                        <th><img alt="image" src="/"
+                    <tr th:each="m : *{getModels()}" th:object="${m}">
+
+                        <th th:text="*{getName()}">Model Name</th>
+                        <th th:text="*{getCategory()}">Model Category</th>
+                        <th th:text="*{getStartYear()}">Model Start Year</th>
+                        <th th:text="*{getEndYear()}">Model End Year</th>
+                        <th><img alt="image" th:src="*{getImageUrl()}"
                                  class="img-thumbnail rounded"></th>
                     </tr>
                 </table>

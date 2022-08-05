@@ -1,6 +1,7 @@
 package softuni.carsalessystem.web;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,8 +46,10 @@ public class OffersController {
         return "details";
     }
 
+    @PreAuthorize("@offerServiceImpl.isOwner(#principal.name, #id)")
     @DeleteMapping("/offers/{id}")
-    public String deleteOffer(@PathVariable Long id) {
+    public String deleteOffer(@PathVariable Long id,
+                              Principal principal) {
         this.offerService.delete(id);
         return "redirect:/offers/all";
     }
@@ -117,12 +120,9 @@ public class OffersController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addOfferBindingModel", addOfferBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addOfferBindingModel", bindingResult);
-            redirectAttributes.addFlashAttribute("brands", this.brandService.getAllBrands());
             redirectAttributes.addFlashAttribute("engines", EngineEnum.values());
-            redirectAttributes.addFlashAttribute("transmissions", TransmissionEnum.values());
-            redirectAttributes.addFlashAttribute("price", addOfferBindingModel.getPrice());
-            redirectAttributes.addFlashAttribute("mileage", addOfferBindingModel.getMileage());
-            redirectAttributes.addFlashAttribute("imageUrl", addOfferBindingModel.getImageUrl());
+           redirectAttributes.addFlashAttribute("transmissions", TransmissionEnum.values());
+
             return "redirect:/offers/add";
         }
 
