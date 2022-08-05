@@ -1,9 +1,12 @@
 package softuni.carsalessystem.services.impl;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import softuni.carsalessystem.enums.UserRoleEnum;
-import softuni.carsalessystem.models.bindings.UserLoginBindingModel;
 import softuni.carsalessystem.models.entities.UserEntity;
 import softuni.carsalessystem.models.entities.UserRoleEntity;
 import softuni.carsalessystem.models.service.UserRegisterServiceModel;
@@ -19,14 +22,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final UserRoleRepository userRoleRepository;
+    private final AppUserServiceImpl appUserService;
 
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository, AppUserServiceImpl appUserService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRoleRepository = userRoleRepository;
+        this.appUserService = appUserService;
     }
 
     @Override
@@ -86,9 +90,14 @@ public class UserServiceImpl implements UserService {
         newUser.setRoles(List.of(userRole));
 
         newUser = userRepository.save(newUser);
-        // Todo:register user
+        UserDetails principal = appUserService.loadUserByUsername(newUser.getUsername());
 
-        // login(newUser);
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(principal, newUser.getPassword(), principal.getAuthorities());
+
+        authentication.getAuthorities();
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     @Override

@@ -66,8 +66,9 @@ public class OfferServiceImpl implements OfferService {
         offer2.setSeller(userRepository.findByUsername("Admin").orElse(null));
         offer2.setImageUrl("https://s1.cdn.autoevolution.com/images/gallery/MERCEDES-BENZ-S-Klasse--W221--4131_31.jpg");
 
+
         OfferEntity offer3 = new OfferEntity()
-                .setModel(modelRepository.findByName("5 seria").orElse(null))
+                .setModel(modelRepository.findByName("550").orElse(null))
                 .setEngine(EngineEnum.GASOLINE)
                 .setTransmission(TransmissionEnum.AUTOMATIC)
                 .setMileage(50000)
@@ -77,7 +78,40 @@ public class OfferServiceImpl implements OfferService {
                 .setSeller(userRepository.findByUsername("Admin").orElse(null))
                 .setImageUrl("https://pokupka-globalen.today/pics_MP-Style-Carbon-Fiber-Car-Tail-Wing-For-BMW-M5-F90-1/imgs_80117.jpeg");
 
-        offerRepository.saveAll(List.of(offer1, offer2, offer3));
+        OfferEntity offer4 = new OfferEntity()
+                .setModel(modelRepository.findByName("Accord").orElse(null))
+                .setEngine(EngineEnum.DIESEL)
+                .setTransmission(TransmissionEnum.AUTOMATIC)
+                .setMileage(75000)
+                .setPrice(BigDecimal.valueOf(60000))
+                .setYear(2017)
+                .setDescription("Always serviced on time and in good condition.")
+                .setSeller(userRepository.findByUsername("Admin").orElse(null))
+                .setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Honda_Accord_%28CV3%29_EX_eHEV%2C_2021%2C_front.jpg/1920px-Honda_Accord_%28CV3%29_EX_eHEV%2C_2021%2C_front.jpg");
+
+        OfferEntity offer5 = new OfferEntity()
+                .setModel(modelRepository.findByName("A4").orElse(null))
+                .setEngine(EngineEnum.HYBRID)
+                .setTransmission(TransmissionEnum.AUTOMATIC)
+                .setMileage(70000)
+                .setPrice(BigDecimal.valueOf(50000))
+                .setYear(2018)
+                .setDescription("Always serviced on time and in good condition.")
+                .setSeller(userRepository.findByUsername("Martin").orElse(null))
+                .setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/2018_Audi_A4_Sport_TDi_Quattro_S-A_2.0.jpg/1920px-2018_Audi_A4_Sport_TDi_Quattro_S-A_2.0.jpg");
+
+        OfferEntity offer6 = new OfferEntity()
+                .setModel(modelRepository.findByName("Astra").orElse(null))
+                .setEngine(EngineEnum.ELECTRIC)
+                .setTransmission(TransmissionEnum.AUTOMATIC)
+                .setMileage(20000)
+                .setPrice(BigDecimal.valueOf(50000))
+                .setYear(2021)
+                .setDescription("The car is under warranty until 2026.")
+                .setSeller(userRepository.findByUsername("Martin").orElse(null))
+                .setImageUrl("https://automedia.investor.bg/media/files/resized/gallery/760x/248/c1b964dacd29eedf51d157d6f45c7248-01-12.jpg");
+
+        offerRepository.saveAll(List.of(offer1, offer2, offer3, offer4, offer5, offer6));
     }
 
     @Override

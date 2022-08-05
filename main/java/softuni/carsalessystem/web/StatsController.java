@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import softuni.carsalessystem.services.StatsService;
 
+import javax.servlet.http.Cookie;
+
 @Controller
 public class StatsController {
 
@@ -21,4 +23,5 @@ public class StatsController {
         modelAndView.setViewName("stats");
         return modelAndView;
     }
+
 }
